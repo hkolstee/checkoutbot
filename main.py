@@ -23,22 +23,30 @@ def run(username, password, size, shoeURL = None):
 
     acceptCookies(driver)
     
-    selectSize(driver)
+    selectSize(driver, size)
 
     # need workaround for buy button
     addToCart(driver)
 
+    # guestCheckOut = driver.find_element(By.XPATH, '//*[@id="qa-guest-checkout-mobile"]')
+    # guestCheckOut.click()
+
 # accept the cookies
 def acceptCookies(driver):
     acceptCookies = driver.find_element(By.XPATH, '//*[@id="cookie-settings-layout"]/div/div/div/div[3]/div[1]/button')
-    acceptCookies.click()
+    acceptCookies.click() 
 
-# select the size, hardcoded to 42 right now
-def selectSize(driver):
-    clickSize = driver.find_element(By.XPATH, '//*[@id="root"]/div/div/div[1]/div/div[1]/div[2]/div/section/div[2]/aside/div/div[2]/div/div[2]/ul/li[10]/button')
+# select the size
+def selectSize(driver, size):
+    clickSize = driver.find_element(By.XPATH, "//*[text()='EU " + size + "']")
     clickSize.click()
 
+# clicks the "Buy *price*" button, can't be done the simple way because the button is not interactable 
 def addToCart(driver):
+    clickBuy = driver.find_element(By.XPATH, "//*[contains(text(),'Buy ')]")
+    driver.execute_script("arguments[0].click();", clickBuy)
+
+def login(driver, username, password):
     pass
 
 # Main function, only runs from command line
@@ -47,7 +55,7 @@ if __name__ == "__main__":
     if ((len(sys.argv)-1) != 4):
         print('\033[95m' + "----------------------------------------------------------")
         print('\033[91m' + "To run script, use:")
-        print('\033[93m' + "python3 main.py *username* *password* *size* *URL of shoe*")
+        print('\033[93m' + "python3 main.py *username* *password* *size(EU)* *URL of shoe*")
         print('\033[95m' + "----------------------------------------------------------" + '\u001b[0m')
         exit()
     
