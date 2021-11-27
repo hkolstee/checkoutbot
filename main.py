@@ -1,11 +1,10 @@
+import time
+
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver import ChromeOptions, Chrome
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-
-import time
-
 
 # detach option to allow window to stay open after script has ended
 opts = ChromeOptions()
