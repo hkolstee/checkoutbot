@@ -1,3 +1,3 @@
 # checkoutbot
 
-A python checkout bot based on the SNKRS website.
+A python selenium checkout bot based on the SNKRS website.
