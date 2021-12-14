@@ -6,7 +6,7 @@ A python selenium checkout bot based on the SNKRS website.
 
 # Setup:
 
-replacing cdc_ string in Chromedriver to avoid detection using Vim:
+replacing cdc_ string in Chromedriver using Vim to avoid detection:
 
 vim /path/to/chromedriver
 After running the line above, do the following:
