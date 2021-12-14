@@ -19,14 +19,15 @@ def run(username, password, size, shoeURL = None):
     opts = ChromeOptions()
     # opts.headless = True
     opts.add_experimental_option("detach", True)
-    opts.add_experimental_option("useAutomationExtension", False)
-    opts.add_experimental_option("excludeSwitches",["enable-automation"])
+    opts.add_argument('--disable-blink-features=AutomationControlled')
+    opts.add_experimental_option("excludeSwitches", ["enable-automation"])
+    opts.add_experimental_option('useAutomationExtension', False)
     # opts.add_argument("--allow-running-insecure-content") 
     # opts.add_argument("--disable-web-security") 
     # opts.add_argument("--allow-insecure-localhost")
 
-    # Latest chrome driver
-    driver = webdriver.Chrome(service = Service(ChromeDriverManager().install()), options=opts)
+    # Can't use latest because we need to modify chromedriver to avoid detection
+    driver = webdriver.Chrome(service = Service("/usr/bin/chromedriver"), options = opts)
 
     # Use given url
     driver.get(shoeURL)
@@ -47,35 +48,26 @@ def run(username, password, size, shoeURL = None):
 # accept the cookies
 def acceptCookies(driver):
     acceptCookies = driver.find_element(By.XPATH, '//*[@id="cookie-settings-layout"]/div/div/div/div[3]/div[1]/button')
+    WebDriverWait(driver, 1000, 0.01).until(ec.element_to_be_clickable(acceptCookies))
     acceptCookies.click() 
 
 # select the size
 def selectSize(driver, size):
     clickSize = driver.find_element(By.XPATH, "//*[text()='EU " + size + "']")
-    clickSize.click()
+    WebDriverWait(driver, 1000, 0.01).until(ec.element_to_be_clickable(clickSize))
+    # clickSize.click()
     driver.execute_script("arguments[0].click();", clickSize)
 
 
 # clicks the "Buy *price*" button, can't be done the simple way because the button is not interactable 
 def addToCart(driver):
-    # Wait till buy button present
-    # clickBuy = WebDriverWait(driver, 1000, 0.01).until(ec.presence_of_element_located((By.XPATH, "//*[contains(text(),'Buy ')]")))
-    # clickBuy = WebDriverWait(driver, 1000, 0.01).until(ec.element_to_be_clickable((By.XPATH, "//*[contains(text(),'Buy ')]")))
     # clickBuy = driver.find_element(By.XPATH, "//*[contains(text(),'Buy ')]")
     clickBuy = driver.find_element(By.XPATH, """//*[@id="root"]/div/div/div[1]/div/div[1]/div[2]/div/section/div[2]/aside/div/div[2]/div/div[2]/div/button""")
 
     driver.execute_script("arguments[0].scrollIntoView(true);", clickBuy)
 
-
-    # clickBuy.send_keys(Keys.ENTER)
-    # clickBuy.click()
-
-    # ActionChains(driver).move_to_element(clickBuy).click(clickBuy).perform()
-
-    # WebDriverWait(driver, 1000, 0.01).until(ec.element_to_be_clickable((By.XPATH, """//*[@id="root"]/div/div/div[1]/div/div[1]/div[2]/div/section/div[2]/aside/div/div[2]/div/div[2]/div/button""")))
-
     # Make selenium run a javascript click on the element
-    clickBuy.click()
+    # clickBuy.click()
     driver.execute_script("arguments[0].click();", clickBuy)
 
 def waitForPageToLoad(TimeOutInSec):
