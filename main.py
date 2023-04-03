@@ -27,7 +27,8 @@ def run(username, password, size, shoeURL = None):
     # opts.add_argument("--allow-insecure-localhost")
 
     # Can't use latest because we need to modify chromedriver to avoid detection
-    driver = webdriver.Chrome(service = Service("/usr/bin/chromedriver"), options = opts)
+    # driver = webdriver.Chrome(service = Service("/usr/bin/chromedriver"), options = opts)
+    driver = webdriver.Chrome(service = Service("/usr/bin/chromedriver_linux"), options = opts)
 
     # Use given url
     driver.get(shoeURL)
